@@ -2,7 +2,8 @@
   var svg;
 
   //save off default references
-  var d3 = window.d3, topojson = window.topojson;
+  var d3 = typeof window === "object" && window.d3 ? window.d3 : require("d3");
+  var topojson = typeof window === "object" && window.topojson ? window.topojson : require("topojson");
 
   var defaultOptions = {
     scope: 'world',
@@ -721,12 +722,13 @@
   // expose library
   if ( typeof define === "function" && define.amd ) {
     define( "datamaps", function(require) { d3 = require('d3'); topojson = require('topojson'); return Datamap; } );
-  }
-  else {
+  } else if (typeof module === "object" && module.exports){
+    module.exports = Datamap;
+  } else if (typeof window === "object") {
     window.Datamap = window.Datamaps = Datamap;
   }
 
-  if ( window.jQuery ) {
+  if (typeof window === "object" && window.jQuery) {
     window.jQuery.fn.datamaps = function(options, callback) {
       options = options || {};
       options.element = this[0];
