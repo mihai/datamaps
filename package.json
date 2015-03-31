@@ -6,7 +6,10 @@
   "scripts": {
     "test": "grunt jasmine"
   },
-  "dependencies": {},
+  "dependencies": {
+    "d3": "~3.3.8",
+    "topojson": "~1.4.3"
+  },
   "devDependencies": {
     "grunt-replace": "~0.4.4",
     "grunt": "~0.4.1",
