@@ -2,8 +2,9 @@
   var svg;
 
   //save off default references
-  var d3 = window.d3, topojson = window.topojson;
-  
+  var d3 = typeof window === "object" && window.d3 ? window.d3 : require("d3");
+  var topojson = typeof window === "object" && window.topojson ? window.topojson : require("topojson");
+
   var defaultOptions = {
     scope: 'world',
     responsive: false,
@@ -67,7 +68,7 @@
       d3.select(this.options.element).style({'position': 'relative', 'padding-bottom': '60%'});
       d3.select(this.options.element).select('svg').style({'position': 'absolute', 'width': '100%', 'height': '100%'});
       d3.select(this.options.element).select('svg').select('g').selectAll('path').style('vector-effect', 'non-scaling-stroke');
-    
+
     }
 
     return this.svg;
@@ -79,7 +80,7 @@
     var height = options.height || element.offsetHeight;
     var projection, path;
     var svg = this.svg;
-    
+
     if ( options && typeof options.scope === 'undefined') {
       options.scope = 'world';
     }
@@ -217,7 +218,7 @@
           d3.selectAll('.datamaps-hoverover').style('display', 'none');
         });
     }
-    
+
     function moveToFront() {
       this.parentNode.appendChild(this);
     }
@@ -264,7 +265,7 @@
       this.svg.insert("path", '.datamaps-subunits')
         .datum(graticule)
         .attr("class", "datamaps-graticule")
-        .attr("d", this.path); 
+        .attr("d", this.path);
   }
 
   function handleArcs (layer, data, options) {
@@ -587,7 +588,7 @@
               var tmpData = {};
               for(var i = 0; i < data.length; i++) {
                 tmpData[data[i].id] = data[i];
-              } 
+              }
               data = tmpData;
             }
             Datamaps.prototype.updateChoropleth.call(self, data);
@@ -12182,12 +12183,13 @@
   // expose library
   if ( typeof define === "function" && define.amd ) {
     define( "datamaps", function(require) { d3 = require('d3'); topojson = require('topojson'); return Datamap; } );
-  }
-  else {
+  } else if (typeof module === "object" && module.exports){
+    module.exports = Datamap;
+  } else if (typeof window === "object") {
     window.Datamap = window.Datamaps = Datamap;
   }
 
-  if ( window.jQuery ) {
+  if (typeof window === "object" && window.jQuery) {
     window.jQuery.fn.datamaps = function(options, callback) {
       options = options || {};
       options.element = this[0];
