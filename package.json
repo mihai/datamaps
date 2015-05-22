@@ -7,7 +7,7 @@
     "test": "grunt jasmine"
   },
   "dependencies": {
-    "d3": "~3.3.8",
+    "d3": "^3.3.8",
     "topojson": "~1.4.3"
   },
   "devDependencies": {
